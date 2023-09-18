@@ -49,25 +49,25 @@ with st.sidebar:
         "num_mcqs", min_value=5, max_value=10, value=7, label_visibility="collapsed"
     )
 
-def get_vectorStore(text_data):
+def get_embeddings(text_data, document):
     with st.spinner("Loading PDF Files"):
         chunks = get_text_chunks(text_data)
-        vectorStoreObj = get_vectorstore(chunks)
+        vectorStoreObj = get_vectorstore(chunks, document)
         st.session_state["vectorStore"] = vectorStoreObj
 
-if sel_dis == "Standard Treatment Guidelines":
-    text_data = get_pdf_text("data/stg.pdf")
-    get_vectorStore(text_data)
-elif sel_dis == "Public Health Act":
-    text_data = get_pdf_text("data/public_health_act_2012.pdf")
-    get_vectorStore(text_data)
-    
+if "discipline_type" not in st.session_state:
+    st.session_state["discipline_type"] = ""
 
-if "vectorStore" not in st.session_state:
-    get_vectorStore(text_data)
+if st.session_state["discipline_type"] != sel_dis:
+    if sel_dis == "Standard Treatment Guidelines":
+        text_data = get_pdf_text("data/stg.pdf")
+        get_embeddings(text_data, document="stg")
         
+    elif sel_dis == "Public Health Act":
+        text_data = get_pdf_text("data/public_health_act_2012.pdf")
+        get_embeddings(text_data, document="pha")
 
-
+    st.session_state['discipline_type'] = sel_dis
 
 # Main
 st.title("Objective Quiz")

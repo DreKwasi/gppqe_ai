@@ -31,10 +31,14 @@ def get_text_chunks(text):
     return chunks
 
 
-def get_vectorstore(text_chunks):
+def get_vectorstore(text_chunks, document):
     embeddings = OpenAIEmbeddings( openai_api_key=api_key)
     # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
-    vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
+    try:
+        vectorstore = FAISS.load_local(f"{document}_faiss_index", embeddings)
+    except Exception as e:
+        vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
+        vectorstore.save_local(f"{document}_faiss_index")
     return vectorstore
 
 
