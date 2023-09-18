@@ -55,12 +55,12 @@ def get_vectorStore(text_data):
         vectorStoreObj = get_vectorstore(chunks)
         st.session_state["vectorStore"] = vectorStoreObj
 
-# if sel_dis == "Standard Treatment Guidelines":
-#     text_data = get_pdf_text("data/stg.pdf")
-#     get_vectorStore(text_data)
-# elif sel_dis == "Public Health Act":
-#     text_data = get_pdf_text("data/public_health_act_2012.pdf")
-#     get_vectorStore(text_data)
+if sel_dis == "Standard Treatment Guidelines":
+    text_data = get_pdf_text("data/stg.pdf")
+    get_vectorStore(text_data)
+elif sel_dis == "Public Health Act":
+    text_data = get_pdf_text("data/public_health_act_2012.pdf")
+    get_vectorStore(text_data)
     
 
 if "vectorStore" not in st.session_state:
