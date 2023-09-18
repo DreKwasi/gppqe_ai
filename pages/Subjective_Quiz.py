@@ -13,42 +13,49 @@ st.set_page_config(
 # Sidebar
 with st.sidebar:
     st.header("Options")
-    
-    
+
     st.write("Discipline")
     sel_dis = st.selectbox(
         "quiz_type",
         options=["Standard Treatment Guidelines", "Public Health Act"],
         label_visibility="collapsed",
     )
-    
+
     clinical_options = ["Diabetes", "Hypertension"]
     health_act_options = ["Communicable Disease", "Vaccination", "Immunization"]
     st.write("Topics")
     sel_topics = st.multiselect(
         "topics",
         default="Diabetes",
-        options= clinical_options if sel_dis == "Standard Treatment Guidelines" else health_act_options,
+        options=clinical_options
+        if sel_dis == "Standard Treatment Guidelines"
+        else health_act_options,
         placeholder="Select a topic",
         label_visibility="collapsed",
     )
 
-def get_vectorStore(text_data):
+
+def get_embeddings(text_data, document):
     with st.spinner("Loading PDF Files"):
         chunks = get_text_chunks(text_data)
-        vectorStoreObj = get_vectorstore(chunks)
+        vectorStoreObj = get_vectorstore(chunks, document)
         st.session_state["vectorStore"] = vectorStoreObj
 
-if sel_dis == "Standard Treatment Guidelines":
-    text_data = get_pdf_text("data/stg.pdf")
-    get_vectorStore(text_data)
-elif sel_dis == "Pharmacy Act 2012":
-    text_data = get_pdf_text("data/public_health_act_2012.pdf")
-    get_vectorStore(text_data)
-    
 
-if "vectorStore" not in st.session_state:
-    get_vectorStore
+if "discipline_type" not in st.session_state:
+    st.session_state["discipline_type"] = ""
+
+if st.session_state["discipline_type"] != sel_dis:
+    if sel_dis == "Standard Treatment Guidelines":
+        text_data = get_pdf_text("data/stg.pdf")
+        get_embeddings(text_data, document="stg")
+
+    elif sel_dis == "Public Health Act":
+        text_data = get_pdf_text("data/public_health_act_2012.pdf")
+        get_embeddings(text_data, document="pha")
+
+    st.session_state["discipline_type"] = sel_dis
+
 
 # Main
 st.title("Subjective Quiz")
@@ -67,7 +74,7 @@ with col2:
     chat_history = []
     if st.button("Generate quiz", type="primary"):
         user_question = "Ask me any random question on Diabetes & Hypertension?"
-        
+
         with st.spinner("Generating quiz"):
             conversationChain, mermory = get_conversation_chain(
                 st.session_state["vectorStore"],
@@ -78,7 +85,7 @@ with col2:
             response = conversationChain(
                 {"question": user_question, "chat_history": chat_history}
             )
-            
+
         chat_history.append(response["answer"])
         ai_question = response["answer"]
 
