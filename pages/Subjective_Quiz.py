@@ -23,13 +23,12 @@ with st.sidebar:
 
     clinical_options = ["Diabetes", "Hypertension"]
     health_act_options = ["Communicable Disease", "Vaccination", "Immunization"]
+    
     st.write("Topics")
     sel_topics = st.multiselect(
         "topics",
-        default="Diabetes",
-        options=clinical_options
-        if sel_dis == "Standard Treatment Guidelines"
-        else health_act_options,
+        default="Diabetes" if sel_dis == "Standard Treatment Guidelines" else "Communicable Disease",
+        options= clinical_options if sel_dis == "Standard Treatment Guidelines" else health_act_options,
         placeholder="Select a topic",
         label_visibility="collapsed",
     )
@@ -73,7 +72,7 @@ with col2:
     ai_question = ""
     chat_history = []
     if st.button("Generate quiz", type="primary"):
-        user_question = "Ask me any random question on Diabetes & Hypertension?"
+        user_question = f"Ask me any random question on {sel_topics}?"
 
         with st.spinner("Generating quiz"):
             conversationChain, mermory = get_conversation_chain(
