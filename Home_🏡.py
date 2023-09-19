@@ -2,8 +2,8 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 
 st.set_page_config(
-    page_title="Pharmacy Quiz Master",
-    page_icon="🛒",
+    page_title="PharmaAssist",
+    page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -15,7 +15,7 @@ st.write(
         This app is designed to help pharmacists prepare for their licensure exam by providing multiple choice questions based on the Ghanaian Standard Treatment Guidelines and the Public Health Act using AI.
         Additionally, we offer a chatbot for assessing open-ended questions."""
 )
-
+st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
 # Navigation options
 col1, col2 = st.columns(2)
 if col1.button(

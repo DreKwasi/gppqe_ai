@@ -3,8 +3,8 @@ from helper_func.llm_model import *
 from helper_func.text_utils import clinical_options, objective_question_prompt, output_parser, health_act_options
 
 st.set_page_config(
-    page_title="Pharmacy Quiz Master",
-    page_icon="🛒",
+    page_title="PharmaAssist",
+    page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded",
 )

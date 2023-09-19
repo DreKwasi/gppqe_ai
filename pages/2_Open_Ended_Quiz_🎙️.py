@@ -4,8 +4,8 @@ from helper_func.text_utils import clinical_options, subjective_question_prompt,
 
 # Page settings
 st.set_page_config(
-    page_title="Pharmacy Quiz Master",
-    page_icon="🛒",
+    page_title="PharmaAssist",
+    page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -73,6 +73,7 @@ if st.session_state["discipline_type"] != sel_dis:
 
 # Main
 st.title("Open Ended Quiz")
+st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
 
 if col2.button("Reset Chat"):
     del st.session_state["messages"]
@@ -99,7 +100,7 @@ if answer := st.chat_input("Answer the questions here..."):
         st.markdown(answer)
     st.session_state["messages"].append({"role": "user", "content": answer})
 
-    with st.spinner("Confirming answer..."):
+    with st.spinner("Generating response..."):
         conversationChain, mermory = get_conversation_chain(
             st.session_state["vectorStore"], subject_answer_prompt, input_key="question"
         )

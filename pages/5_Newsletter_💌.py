@@ -5,12 +5,11 @@ import datetime as dt
 from helper_func import db
 
 st.set_page_config(
-    page_title="Pharmacy Quiz Master",
-    page_icon="🛒",
+    page_title="PharmaAssist",
+    page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded",
 )
-
 
 with st.form("signup_form", clear_on_submit=False):
     st.subheader("Receive Curated GPPQE Questions In Your Inbox 😃")

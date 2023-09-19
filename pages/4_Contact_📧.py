@@ -3,8 +3,8 @@ from helper_func import styles, utils
 from streamlit_lottie import st_lottie  # pip install streamlit-lottie
 
 st.set_page_config(
-    page_title="Pharmacy Quiz Master",
-    page_icon="🛒",
+    page_title="PharmaAssist",
+    page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -15,7 +15,7 @@ styles.local_css("styles/contact_form.css")
 st.subheader("📥 Get In Touch With Me !")
 col1, col2 = st.columns([2, 1])
 contact_form = """
-<form action="https://formsubmit.co/andrewsboateng137@gmail.com" method="POST">
+<form action="https://formsubmit.co/f019594dc785ee264df1d144b7593265 " method="POST">
     <input type="hidden" name="_captcha" value="false">
     <input type="text" name="name" placeholder="Your name" required>
     <input type="email" name="email" placeholder="Your email" required>
