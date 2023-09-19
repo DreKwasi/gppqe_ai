@@ -155,6 +155,7 @@ objective_question_prompt = PromptTemplate(
 chat_template = """
 You are an expert in {context}. 
 Provide factual responses based on {context} to the user.
+If you can not provide an answer, simply say so.
 
 {question}
 """
