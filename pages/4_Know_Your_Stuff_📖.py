@@ -82,34 +82,38 @@ if "recorded_question" not in st.session_state:
     st.session_state["recorded_question"] = ""
 
 st.title("Revise with AI 📖")
+st.info(f"💡 Chat focus will be centered on the {sel_dis}. Change the document type at the sidebar.")
 st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
 
 
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([1, 2])
 
 if col1.button("Reset Chat"):
     st.session_state["chat_messages"] = []
     st.session_state["chat_history"] = []
 
 with col2:
-    audio_bytes = audio_recorder(
-        "Record your answer", icon_size="2x", pause_threshold=3
-    )
-    if audio_bytes:
-        st.audio(audio_bytes, format="audio/mpeg")
-        if st.button("Submit recording"):
-            with open("data/recording.wav", "wb") as f:
-                f.write(audio_bytes)
-            with st.spinner(
-                "Transcribing your answer (This may take longer than usual)..."
-            ):
-                transcript = get_transcript("data/recording.wav")
-                st.session_state["recorded_question"] = transcript.text
-                if os.path.exists("data/recording.wav"):
-                    os.remove("data/recording.wav")
-                audio_bytes = None
-            st.toast("Transcibing completed")
-            st.balloons()
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        audio_bytes = audio_recorder(
+            "Record your answer", icon_size="2x", pause_threshold=3
+        )
+        if audio_bytes:
+            col2.audio(audio_bytes, format="audio/mpeg")
+    
+            if col3.button("Submit recording"):
+                with open("data/recording.wav", "wb") as f:
+                    f.write(audio_bytes)
+                with st.spinner(
+                    "Transcribing your answer (This may take longer than usual)..."
+                ):
+                    transcript = get_transcript("data/recording.wav")
+                    st.session_state["recorded_question"] = transcript.text
+                    if os.path.exists("data/recording.wav"):
+                        os.remove("data/recording.wav")
+                    audio_bytes = None
+                st.toast("Transcibing completed")
+                st.balloons()
 
 # Display messages on rerun
 for message in st.session_state["chat_messages"]:
@@ -146,4 +150,4 @@ if question:
     )
     st.session_state["recorded_question"] = ""
     st.toast("Response generated")
-    st.balloons()
+    # st.balloons()
