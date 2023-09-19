@@ -1,6 +1,11 @@
 import streamlit as st
 from helper_func.llm_model import *
-from helper_func.text_utils import clinical_options, subjective_question_prompt, subject_answer_prompt, health_act_options
+from helper_func.text_utils import (
+    clinical_options,
+    subjective_question_prompt,
+    subject_answer_prompt,
+    health_act_options,
+)
 
 # Page settings
 st.set_page_config(
@@ -33,27 +38,7 @@ with st.sidebar:
         placeholder="Select a topic",
         label_visibility="collapsed",
     )
-    col1, col2 = st.columns(2)
-
-    user_question = ""
-    ai_question = ""
-    chat_history = []
-    if col1.button("Generate quiz", type="primary"):
-        user_question = f"Ask me any random question on {sel_topics}"
-
-        with st.spinner("Generating open-ended question"):
-            conversationChain, mermory = get_conversation_chain(
-                st.session_state["vectorStore"],
-                subjective_question_prompt,
-                input_key="question",
-            )
-            mermory.clear()
-            response = conversationChain(
-                {"question": user_question, "chat_history": chat_history}
-            )
-
-        chat_history.append(response["answer"])
-        ai_question = response["answer"]
+    
 
 
 if "discipline_type" not in st.session_state:
@@ -61,26 +46,52 @@ if "discipline_type" not in st.session_state:
 
 if st.session_state["discipline_type"] != sel_dis:
     if sel_dis == "Standard Treatment Guidelines":
-        text_data = get_pdf_text("data/stg.pdf")
-        get_embeddings(text_data, document="stg")
+        with st.spinner("Loading Standard Treatment Guidelines..."):
+            text_data = get_pdf_text("data/stg.pdf")
+            get_embeddings(text_data, document="stg")
 
     elif sel_dis == "Public Health Act":
-        text_data = get_pdf_text("data/public_health_act_2012.pdf")
-        get_embeddings(text_data, document="pha")
+        with st.spinner("Loading Public Health Act..."):
+            text_data = get_pdf_text("data/public_health_act_2012.pdf")
+            get_embeddings(text_data, document="pha")
 
     st.session_state["discipline_type"] = sel_dis
 
-
+    
 # Main
 st.title("Open Ended Quiz")
 st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
+col1, col2 = st.columns(2)
+
+user_question = ""
+ai_question = ""
+chat_history = []
+if col1.button("Generate quiz", type="primary"):
+    user_question = f"Ask me any random question on {sel_topics}"
+
+    with st.spinner("Generating open-ended question"):
+        conversationChain, mermory = get_conversation_chain(
+            st.session_state["vectorStore"],
+            subjective_question_prompt,
+            input_key="question",
+        )
+        mermory.clear()
+        response = conversationChain(
+            {"question": user_question, "chat_history": chat_history}
+        )
+
+    chat_history.append(response["answer"])
+    st.session_state["ai_question"] = response["answer"]
 
 if col2.button("Reset Chat"):
-    del st.session_state["messages"]
+    st.session_state["messages"] = []
+    st.session_state["ai_question"] = ""
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
 
+if "ai_question" not in st.session_state:
+    st.session_state["ai_question"] = ""
 
 # Display messages on rerun
 for message in st.session_state["messages"]:
@@ -89,17 +100,16 @@ for message in st.session_state["messages"]:
 
 if user_question:
     with st.chat_message("assistant"):
-        st.markdown(response["answer"])
+        st.markdown(st.session_state["ai_question"])
     st.session_state["messages"].append(
-        {"role": "assistant", "content": response["answer"]}
+        {"role": "assistant", "content": st.session_state["ai_question"]}
     )
-    st.session_state["ai_question"] = ai_question
 
-else:
-    st.info("Click Generate Quiz to start the ChatBot")
-    
+if not st.session_state["ai_question"]:
+    st.info("💡 Click generate quiz to start the ChatBot")
 
-if answer := st.chat_input("Answer the questions here..."):
+prompt_placeholder = "Answer the questions here..." if st.session_state["ai_question"] != "" else "Click the generate quiz button to get a quiz"
+if answer := st.chat_input(prompt_placeholder, disabled=st.session_state['ai_question'] == ""):
     with st.chat_message("user"):
         st.markdown(answer)
     st.session_state["messages"].append({"role": "user", "content": answer})
