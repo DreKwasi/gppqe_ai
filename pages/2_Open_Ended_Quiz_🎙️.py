@@ -117,7 +117,7 @@ with col3:
     if st.session_state["ai_question"] != "":
         audio_bytes = audio_recorder("Record your answer", icon_size="2x", pause_threshold=3)        
         if audio_bytes:
-            st.audio(audio_bytes, format="audio/wav")
+            st.audio(audio_bytes, format="audio/mpeg")
             if st.button("Submit recording"):
                 with open("data/recording.wav", "wb") as f:
                     f.write(audio_bytes)
