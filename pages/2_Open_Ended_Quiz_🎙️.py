@@ -63,7 +63,7 @@ if st.session_state["discipline_type"] != sel_dis:
 
     
 # Main
-st.title("Open Ended Quiz")
+st.title("Open Ended Quiz 🎙️")
 st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
 col1, col2 = st.columns(2)
 
