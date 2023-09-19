@@ -19,6 +19,7 @@ contact_form = """
     <input type="hidden" name="_captcha" value="false">
     <input type="text" name="name" placeholder="Your name" required>
     <input type="email" name="email" placeholder="Your email" required>
+    <input type="hidden" name="_captcha" value="true">
     <textarea name="message" placeholder="Your message here"></textarea>
     <button type="submit">Send</button>
 </form>

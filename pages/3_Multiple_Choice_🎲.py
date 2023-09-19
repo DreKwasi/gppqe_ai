@@ -63,6 +63,7 @@ if st.session_state["discipline_type"] != sel_dis:
 
 # Main
 st.title("Multiple Choice Quiz 🎰")
+st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
 
 user_question = ""
 ai_question = ""
@@ -96,6 +97,8 @@ selected_answers = {}
 if ai_question:
     st.session_state["parsed_output"] = parsed_output
 
+
+
 if "parsed_output" not in st.session_state:
     st.session_state["parsed_output"] = {}
 
@@ -128,4 +131,4 @@ if st.session_state["parsed_output"]:
             )
 
 else:
-    st.write("No questions to display")
+    st.info("Click Generate quiz button to start generating the questions")

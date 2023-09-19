@@ -95,6 +95,10 @@ if user_question:
     )
     st.session_state["ai_question"] = ai_question
 
+else:
+    st.info("Click Generate Quiz to start the ChatBot")
+    
+
 if answer := st.chat_input("Answer the questions here..."):
     with st.chat_message("user"):
         st.markdown(answer)
