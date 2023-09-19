@@ -7,6 +7,8 @@ from helper_func.text_utils import (
     health_act_options,
 )
 from streamlit_extras.switch_page_button import switch_page
+from helper_func.transcribe import get_transcript
+from audio_recorder_streamlit import audio_recorder
 
 # Page settings
 st.set_page_config(
@@ -27,7 +29,11 @@ with st.sidebar:
         label_visibility="collapsed",
     )
 
-    topic = "Select clinical disorder category" if sel_dis == "Standard Treatment Guidelines" else "Select health act section"
+    topic = (
+        "Select clinical disorder category"
+        if sel_dis == "Standard Treatment Guidelines"
+        else "Select health act section"
+    )
     st.write(f"**{topic}**")
     sel_topics = st.multiselect(
         "topics",
@@ -40,9 +46,12 @@ with st.sidebar:
         placeholder="Select a topic",
         label_visibility="collapsed",
     )
-    
+
     # Footer or contact information
-    if st.button("Click here for any inquiries 🧑🏽‍🔧", type="primary", ):
+    if st.button(
+        "Click here for any inquiries 🧑🏽‍🔧",
+        type="primary",
+    ):
         switch_page("contact 📧")
 
 if "discipline_type" not in st.session_state:
@@ -61,11 +70,23 @@ if st.session_state["discipline_type"] != sel_dis:
 
     st.session_state["discipline_type"] = sel_dis
 
-    
+
 # Main
+
+if "messages" not in st.session_state:
+    st.session_state["messages"] = []
+
+if "ai_question" not in st.session_state:
+    st.session_state["ai_question"] = ""
+
+if "recorded_answer" not in st.session_state:
+    st.session_state["recorded_answer"] = ""
+
 st.title("Open Ended Quiz 🎙️")
 st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
-col1, col2 = st.columns(2)
+
+
+col1, col2, col3 = st.columns(3)
 
 user_question = ""
 ai_question = ""
@@ -91,11 +112,23 @@ if col2.button("Reset Chat"):
     st.session_state["messages"] = []
     st.session_state["ai_question"] = ""
 
-if "messages" not in st.session_state:
-    st.session_state["messages"] = []
 
-if "ai_question" not in st.session_state:
-    st.session_state["ai_question"] = ""
+with col3:
+    if st.session_state["ai_question"] != "":
+        audio_bytes = audio_recorder("Record your answer", icon_size="2x", pause_threshold=3)        
+        if audio_bytes:
+            st.audio(audio_bytes, format="audio/wav")
+            if st.button("Submit recording"):
+                with open("data/recording.wav", "wb") as f:
+                    f.write(audio_bytes)
+                with st.spinner("Transcribing your answer (This may take longer than usual)..."):
+                    transcript = get_transcript("data/recording.wav")
+                    st.session_state["recorded_answer"] = transcript.text
+                    if os.path.exists("data/recording.wav"):
+                        os.remove("data/recording.wav")
+                    audio_bytes = None
+                st.toast("Transcibing completed")
+                st.balloons()
 
 # Display messages on rerun
 for message in st.session_state["messages"]:
@@ -112,8 +145,19 @@ if user_question:
 if not st.session_state["ai_question"]:
     st.info("💡 Click generate quiz to start the ChatBot")
 
-prompt_placeholder = "Answer the questions here..." if st.session_state["ai_question"] != "" else "Click the generate quiz button to get a quiz"
-if answer := st.chat_input(prompt_placeholder, disabled=st.session_state['ai_question'] == ""):
+prompt_placeholder = (
+    "Answer the questions here..."
+    if st.session_state["ai_question"] != ""
+    else "Click the generate quiz button to get a quiz"
+)
+
+recorded_answer = st.session_state["recorded_answer"]
+chat_answer = st.chat_input(
+        prompt_placeholder, disabled=st.session_state["ai_question"] == ""
+    )
+
+answer = chat_answer if recorded_answer == "" else recorded_answer
+if answer:
     with st.chat_message("user"):
         st.markdown(answer)
     st.session_state["messages"].append({"role": "user", "content": answer})
@@ -138,3 +182,6 @@ if answer := st.chat_input(prompt_placeholder, disabled=st.session_state['ai_que
     st.session_state["messages"].append(
         {"role": "assistant", "content": response["answer"]}
     )
+    st.session_state["recorded_answer"] = ""
+    st.toast("Response generated")
+    st.balloons()
