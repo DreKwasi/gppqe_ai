@@ -1,5 +1,7 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
+from streamlit_lottie import st_lottie
+from helper_func import utils
 
 st.set_page_config(
     page_title="PharmaAssist",
@@ -10,10 +12,11 @@ st.set_page_config(
 
 # Page title and description
 st.title("Pharmacist Licensure Exam Prep (PharmAssist) 👨🏽‍⚕️👩🏽‍⚕️")
-st.write(
-        """Welcome to the Pharmacist Licensure Exam Prep App also known as PharmAssist. 
-        This app is designed to help pharmacists prepare for their licensure exam by providing multiple choice questions based on the Ghanaian Standard Treatment Guidelines and the Public Health Act using AI.
-        Additionally, we offer a chatbot for assessing open-ended questions."""
+st.markdown(
+        """
+        * Welcome to the Pharmacist Licensure Exam Prep App also known as PharmAssist.
+        * This app is designed to help pharmacists prepare for their licensure exam by providing **multiple choice quizzes** based on the **Ghanaian Standard Treatment Guidelines** and the **Public Health Act** using **OpenAI & LangChain**.
+        * We also use AI to provide **open-ended questions** to help you prepare for your exam."""
 )
 st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
 # Navigation options
@@ -31,13 +34,28 @@ if col2.button(
 ):
     switch_page("multiple choice 🎲")
 
+col1, col2 = st.columns(2)
 
-# Features to come (Leaderboard, Newsletter, Flashcards)
-st.write("### Upcoming Features")
-st.write("Stay tuned for these exciting features coming soon:")
-st.write("- Leaderboard: Compete with others and track your progress.")
-st.write("- Flashcards: Study key topics with interactive flashcards.")
+with col1:
+    # Features to come (Leaderboard, Newsletter, Flashcards)
+    st.write("### Upcoming Features")
+    st.write("Stay tuned for these exciting features coming soon:")
+    st.write("- Leaderboard: Compete with others and track your progress.")
+    st.write("- Flashcards: Study key topics with interactive flashcards.")
 
-# Footer or contact information
-if st.button("Click here for any inquiries or support 📭", type="primary", ):
-    switch_page("contact 📧")
+    # Footer or contact information
+    if st.button("Click here for any inquiries or support 📭", type="primary", ):
+        switch_page("contact 📧")
+        
+with col2:
+    lottie_comment = utils.load_lottiefile("animations/doc_animation.json")
+    st_lottie(
+        lottie_comment,
+        speed=1,
+        reverse=False,
+        loop=True,
+        quality="high",  # medium ; high
+        height=400,
+        width=None,
+        key=None,
+    )
