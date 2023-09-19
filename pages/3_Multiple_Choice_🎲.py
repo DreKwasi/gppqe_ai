@@ -97,8 +97,6 @@ selected_answers = {}
 if ai_question:
     st.session_state["parsed_output"] = parsed_output
 
-
-
 if "parsed_output" not in st.session_state:
     st.session_state["parsed_output"] = {}
 
@@ -131,4 +129,4 @@ if st.session_state["parsed_output"]:
             )
 
 else:
-    st.info("Click Generate quiz button to start generating the questions")
+    st.info("💡 Click generate quiz to get multiple choice questions")
