@@ -79,7 +79,7 @@ response_schemas = [
     ),
     ResponseSchema(
         name="Answers",
-        description="all answers generated for each question as a list of answers with the corresponding option",
+        description="A list of answers for each question",
     ),
 ]
 output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
