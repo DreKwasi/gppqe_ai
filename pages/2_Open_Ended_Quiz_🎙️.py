@@ -86,7 +86,7 @@ st.title("Open Ended Quiz 🎙️")
 st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
 
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns([1, 1, 3])
 
 user_question = ""
 ai_question = ""
@@ -115,20 +115,25 @@ if col2.button("Reset Chat"):
 
 with col3:
     if st.session_state["ai_question"] != "":
-        audio_bytes = audio_recorder("Record your answer", icon_size="2x", pause_threshold=3)        
-        if audio_bytes:
-            st.audio(audio_bytes, format="audio/mpeg")
-            if st.button("Submit recording"):
-                with open("data/recording.wav", "wb") as f:
-                    f.write(audio_bytes)
-                with st.spinner("Transcribing your answer (This may take longer than usual)..."):
-                    transcript = get_transcript("data/recording.wav")
-                    st.session_state["recorded_answer"] = transcript.text
-                    if os.path.exists("data/recording.wav"):
-                        os.remove("data/recording.wav")
-                    audio_bytes = None
-                st.toast("Transcibing completed")
-                st.balloons()
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            audio_bytes = audio_recorder("Record your answer", icon_size="2x", pause_threshold=3)  
+        
+            if audio_bytes:    
+                col2.audio(audio_bytes, format="audio/mpeg")
+
+                if col3.button("Submit recording"):
+                    with open("data/recording.wav", "wb") as f:
+                        f.write(audio_bytes)
+    
+                    with st.spinner("Transcribing your answer (This may take longer than usual)..."):
+                        transcript = get_transcript("data/recording.wav")
+                        st.session_state["recorded_answer"] = transcript.text
+                        if os.path.exists("data/recording.wav"):
+                            os.remove("data/recording.wav")
+                        audio_bytes = None
+                    st.toast("Transcibing completed")
+                    st.balloons()
 
 # Display messages on rerun
 for message in st.session_state["messages"]:
