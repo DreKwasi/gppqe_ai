@@ -23,13 +23,13 @@ if col1.button(
     type="primary",
     use_container_width=True,
 ):
-    switch_page("Open_Ended_Quiz")
+    switch_page("open ended quiz 🎙️")
 if col2.button(
     "Get started with multiple choice questions",
     type="primary",
     use_container_width=True,
 ):
-    switch_page("Multiple_Choice")
+    switch_page("multiple choice 🎲")
 
 
 # Features to come (Leaderboard, Newsletter, Flashcards)
@@ -39,6 +39,5 @@ st.write("- Leaderboard: Compete with others and track your progress.")
 st.write("- Flashcards: Study key topics with interactive flashcards.")
 
 # Footer or contact information
-st.write(
-"For any inquiries or support, please contact me at andrewsboateng137@gmail.com"
-)
+if st.button("Click here for any inquiries or support 📭", type="primary", ):
+    switch_page("contact 📧")
