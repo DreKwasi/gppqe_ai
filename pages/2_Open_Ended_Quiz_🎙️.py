@@ -6,6 +6,7 @@ from helper_func.text_utils import (
     subject_answer_prompt,
     health_act_options,
 )
+from streamlit_extras.switch_page_button import switch_page
 
 # Page settings
 st.set_page_config(
@@ -17,16 +18,17 @@ st.set_page_config(
 
 # Sidebar
 with st.sidebar:
-    st.header("Options")
+    st.header("Edit question format")
 
-    st.write("Discipline")
+    st.write("**Select document type**")
     sel_dis = st.selectbox(
         "quiz_type",
         options=["Standard Treatment Guidelines", "Public Health Act"],
         label_visibility="collapsed",
     )
 
-    st.write("Topics")
+    topic = "Select clinical disorder category" if sel_dis == "Standard Treatment Guidelines" else "Select health act section"
+    st.write(f"**{topic}**")
     sel_topics = st.multiselect(
         "topics",
         default="Disorders_of_the_GIT"
@@ -39,7 +41,9 @@ with st.sidebar:
         label_visibility="collapsed",
     )
     
-
+    # Footer or contact information
+    if st.button("Click here for any inquiries 🧑🏽‍🔧", type="primary", ):
+        switch_page("contact 📧")
 
 if "discipline_type" not in st.session_state:
     st.session_state["discipline_type"] = ""
