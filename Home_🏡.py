@@ -14,13 +14,14 @@ st.set_page_config(
 st.title("Pharmacist Licensure Exam Prep (PharmAssist) 👨🏽‍⚕️👩🏽‍⚕️")
 st.markdown(
         """
-        * Welcome to the Pharmacist Licensure Exam Prep App also known as PharmAssist.
-        * This app is designed to help pharmacists prepare for their licensure exam by providing **multiple choice quizzes** based on the **Ghanaian Standard Treatment Guidelines** and the **Public Health Act** using **OpenAI & LangChain**.
-        * We also use AI to provide **open-ended questions** to help you prepare for your exam."""
+        * Welcome to the Pharmacist Licensure Exam Prep App also known as PharmAssist
+        * This app is designed to help pharmacists prepare for their licensure exam by providing **multiple choice quizzes** based on the **Ghanaian Standard Treatment Guidelines** and the **Public Health Act** using **OpenAI & LangChain**
+        * We also use AI to provide **open-ended questions**
+        * Finally you can have a **chat session** with the AI as a form of revision"""
 )
 st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
 # Navigation options
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 if col1.button(
     "Get started with open ended quiz assessment",
     type="primary",
@@ -28,12 +29,19 @@ if col1.button(
 ):
     switch_page("open ended quiz 🎙️")
 if col2.button(
-    "Get started with multiple choice questions",
+    "Answer some multiple choice questions",
     type="primary",
     use_container_width=True,
 ):
     switch_page("multiple choice 🎲")
 
+if col3.button(
+    "Study the learning material",
+    type="primary",
+    use_container_width=True,
+):
+    switch_page("know your stuff 📖")
+    
 col1, col2 = st.columns(2)
 
 with col1:
