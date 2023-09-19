@@ -1,8 +1,33 @@
 from langchain.prompts import PromptTemplate
 from langchain.output_parsers import StructuredOutputParser, ResponseSchema
 
-# Templates for Subjective Questioning
 
+clinical_options = [
+    "Disorders_of_the_GIT",
+    "Disorders_of_the_Liver",
+    "Malnutrution_Disorders",
+    "Haematological_Disorders",
+    "Immunisable_Diseases",
+    "Problems_Of_The_Newborn",
+    "Disorders_of_the_CVS",
+    "Disorders_of_the_Respiratory_System",
+    "Disorders_of_the_CNS",
+    "Pyschiatric_Disorders",
+    "Disorders_of_the_Skin",
+]
+health_act_options = [
+    "Communicable Diseases",
+    "Vaccination",
+    "Quarantine",
+    "Vector Control",
+    "Environmental Sanitation",
+    "Tobacco Control Measures",
+    "Food And Drugs",
+    "Clinical Trials",
+    "Miscellaneous Provisions",
+]
+
+# Templates for Subjective Questioning
 subjective_question_template = """
 You are an examiner for the pharmacy license exam.
 Generate 1 subjective question based on the users request.
@@ -14,26 +39,19 @@ All questions should be based on the concepts here: {context}
 
 subjective_answer_template = """
 You are a teacher grading a quiz. 
-You are given a {question} and the student's answer, 
-Respond with the true answer based on the {context} and score the student answer out of a score of 10.
+You are given a {question} and an answer to the question, 
+Respond with the true answer based on the {context} and score the answer out of a score of 10.
+Respond in this format
+Question: {question} \n
+User's Answer: {student_answer} \n
+True Answer: your correct answer here \n
+Grade: Score of the user's answer out of 10 \n
+Explanation: Explain why the user's answer is correct or incorrect based on your correct answer
 
-Example Format:
-QUESTION: question here
-STUDENT ANSWER: student's answer here
-TRUE ANSWER: your correct answer here
-GRADE: score out of 10
-
-Grade the student answers based ONLY on their factual accuracy. 
-Ignore differences in punctuation and phrasing between the student answer and true answer.
-It is OK if the student answer contains more information than the true answer, 
-as long as it does not contain any conflicting statements. Begin! 
-
-QUESTION: {question}
-STUDENT ANSWER: {student_answer}
-TRUE ANSWER: 
-GRADE: 
-
-And explain why the STUDENT ANSWER is correct or incorrect based on your correct answer
+Grade the answers based ONLY on their factual accuracy. 
+Ignore differences in punctuation and phrasing between the answer and true answer.
+It is OK if the answer contains more information than the true answer, 
+as long as it does not contain any conflicting statements. 
 """
 
 
@@ -61,7 +79,7 @@ response_schemas = [
     ),
     ResponseSchema(
         name="Answers",
-        description="all answers generated for each question as a list of answers",
+        description="all answers generated for each question as a list of answers with the corresponding option",
     ),
 ]
 output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
@@ -123,7 +141,6 @@ The format for each quiz should be as such:
 
 {question}
 """
-
 
 objective_question_prompt = PromptTemplate(
     input_variables=[

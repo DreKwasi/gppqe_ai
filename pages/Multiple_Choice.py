@@ -1,7 +1,6 @@
 import streamlit as st
 from helper_func.llm_model import *
-from helper_func.text_utils import *
-import re, json
+from helper_func.text_utils import clinical_options, objective_question_prompt, output_parser, health_act_options
 
 st.set_page_config(
     page_title="Pharmacy Quiz Master",
@@ -9,8 +8,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="auto",
 )
-
-
 
 
 # Sidebar
@@ -23,16 +20,17 @@ with st.sidebar:
         options=["Standard Treatment Guidelines", "Public Health Act"],
         label_visibility="collapsed",
     )
-    
-    
-    clinical_options = ["Diabetes", "Hypertension"]
-    health_act_options = ["Communicable Disease", "Vaccination", "Immunization"]
-    
+
+
     st.write("Topics")
     sel_topics = st.multiselect(
         "topics",
-        default="Diabetes" if sel_dis == "Standard Treatment Guidelines" else "Communicable Disease",
-        options= clinical_options if sel_dis == "Standard Treatment Guidelines" else health_act_options,
+        default="Disorders_of_the_GIT"
+        if sel_dis == "Standard Treatment Guidelines"
+        else "Tobacco Control Measures",
+        options=clinical_options
+        if sel_dis == "Standard Treatment Guidelines"
+        else health_act_options,
         placeholder="Select a topic",
         label_visibility="collapsed",
     )
@@ -49,12 +47,6 @@ with st.sidebar:
         "num_mcqs", min_value=5, max_value=10, value=7, label_visibility="collapsed"
     )
 
-def get_embeddings(text_data, document):
-    with st.spinner("Loading PDF Files"):
-        chunks = get_text_chunks(text_data)
-        vectorStoreObj = get_vectorstore(chunks, document)
-        st.session_state["vectorStore"] = vectorStoreObj
-
 if "discipline_type" not in st.session_state:
     st.session_state["discipline_type"] = ""
 
@@ -62,15 +54,15 @@ if st.session_state["discipline_type"] != sel_dis:
     if sel_dis == "Standard Treatment Guidelines":
         text_data = get_pdf_text("data/stg.pdf")
         get_embeddings(text_data, document="stg")
-        
+
     elif sel_dis == "Public Health Act":
         text_data = get_pdf_text("data/public_health_act_2012.pdf")
         get_embeddings(text_data, document="pha")
 
-    st.session_state['discipline_type'] = sel_dis
+    st.session_state["discipline_type"] = sel_dis
 
 # Main
-st.title("Objective Quiz")
+st.title("Multiple Choice Quiz 🎰")
 
 user_question = ""
 ai_question = ""
@@ -108,7 +100,7 @@ if "parsed_output" not in st.session_state:
     st.session_state["parsed_output"] = {}
 
 # Streamlit app layout
-st.subheader("Multiple Choice Quiz")
+
 if st.session_state["parsed_output"]:
     parsed_output = st.session_state["parsed_output"]
     for i, question in enumerate(parsed_output["Questions"]):
