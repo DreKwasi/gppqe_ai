@@ -59,7 +59,6 @@ def get_conversation_chain(vectorstore, prompt, input_key):
 
 
 def get_embeddings(text_data, document):
-    with st.spinner("Loading PDF Files"):
-        chunks = get_text_chunks(text_data)
-        vectorStoreObj = get_vectorstore(chunks, document)
-        st.session_state["vectorStore"] = vectorStoreObj
+    chunks = get_text_chunks(text_data)
+    vectorStoreObj = get_vectorstore(chunks, document)
+    st.session_state["vectorStore"] = vectorStoreObj
