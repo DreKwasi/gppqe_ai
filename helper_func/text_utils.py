@@ -151,3 +151,18 @@ objective_question_prompt = PromptTemplate(
     partial_variables={"format_instructions": format_instructions},
     template=objective_question_template,
 )
+
+chat_template = """
+You are an expert in {context}. 
+Provide factual responses based on {context} to the user.
+
+{question}
+"""
+
+chat_prompt = PromptTemplate(
+    input_variables=[
+        "context",
+        "question",
+    ],
+    template=chat_template,
+)
