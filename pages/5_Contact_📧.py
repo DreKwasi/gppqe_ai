@@ -1,4 +1,4 @@
-limport streamlit as st
+import streamlit as st
 from helper_func import styles, utils
 from streamlit_lottie import st_lottie  # pip install streamlit-lottie
 
