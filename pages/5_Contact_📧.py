@@ -1,4 +1,4 @@
-import streamlit as st
+limport streamlit as st
 from helper_func import styles, utils
 from streamlit_lottie import st_lottie  # pip install streamlit-lottie
 
@@ -27,8 +27,8 @@ col1, col2 = st.columns([2, 1])
 # col1.markdown(contact_form, unsafe_allow_html=True)
 with col1.form("contact_form", clear_on_submit=False):
     name = st.text_input("name", label_visibility="collapsed", placeholder="Name")
-    email = st.text_input("email", label_visibility="collapsed", placeholder="email")
-    comment = st.text_input("feedback", label_visibility="collapsed", placeholder="feedback")
+    email = st.text_input("email", label_visibility="collapsed", placeholder="Email")
+    comment = st.text_input("feedback", label_visibility="collapsed", placeholder="Feedback")
     submit = st.form_submit_button("Send Feedback", type="primary")
 
 
