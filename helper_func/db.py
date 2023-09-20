@@ -19,3 +19,8 @@ def update_user(details):
         return False
     users.insert(details)
     return True
+
+def send_user_feedback(details):
+    users = deta.Base("feedback")
+    users.insert(details)
+    return True
