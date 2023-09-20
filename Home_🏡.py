@@ -4,7 +4,7 @@ from streamlit_lottie import st_lottie
 from helper_func import utils
 
 st.set_page_config(
-    page_title="PharmaAssist",
+    page_title="PharmAssist",
     page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded",
