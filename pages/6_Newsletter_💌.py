@@ -5,7 +5,7 @@ import datetime as dt
 from helper_func import db
 
 st.set_page_config(
-    page_title="PharmaAssist",
+    page_title="PharmAssist",
     page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded",
