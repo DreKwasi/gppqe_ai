@@ -10,6 +10,8 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+st.title("Multiple Choice Quiz 🎰")
+st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
 
 # Sidebar
 with st.sidebar:
@@ -67,9 +69,6 @@ if st.session_state["discipline_type"] != sel_dis:
     st.session_state["discipline_type"] = sel_dis
 
 # Main
-st.title("Multiple Choice Quiz 🎰")
-st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
-
 user_question = ""
 ai_question = ""
 chat_history = []
