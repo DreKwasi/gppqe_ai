@@ -18,7 +18,6 @@ st.set_page_config(
 )
 
 st.title("Revise with AI 📖")
-st.info(f"💡 Chat focus will be centered on the {sel_dis}. Change the document type at the sidebar.")
 st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
 
 
@@ -76,7 +75,7 @@ if st.session_state["discipline_type"] != sel_dis:
 
 
 # Main
-
+st.info(f"💡 Chat focus will be centered on the {sel_dis}. Change the document type at the sidebar.")
 if "chat_messages" not in st.session_state:
     st.session_state["chat_messages"] = []
 
