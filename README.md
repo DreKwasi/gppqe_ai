@@ -1,4 +1,4 @@
-# Project Name
+# PharmAssist
 
 This app generates quizzes based on the Ghana Standard Treatment Guidelines and the Public Health Act. Additionally, there is an option for revising any of these materials with the AI.  
 
