@@ -4,7 +4,7 @@ from helper_func.text_utils import clinical_options, objective_question_prompt, 
 from streamlit_extras.switch_page_button import switch_page
 
 st.set_page_config(
-    page_title="PharmaAssist",
+    page_title="PharmAssist",
     page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded",
