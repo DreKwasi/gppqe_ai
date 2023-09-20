@@ -12,7 +12,7 @@ from audio_recorder_streamlit import audio_recorder
 
 # Page settings
 st.set_page_config(
-    page_title="PharmaAssist",
+    page_title="PharmAssist",
     page_icon="🔬",
     layout="wide",
     initial_sidebar_state="expanded",
