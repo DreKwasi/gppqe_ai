@@ -10,7 +10,7 @@ st.set_page_config(
 )
 
 styles.local_css("styles/main.css")
-styles.local_css("styles/contact_form.css")
+# styles.local_css("styles/contact_form.css")
 
 st.subheader("📥 Your feedback is king !")
 col1, col2 = st.columns([2, 1])
