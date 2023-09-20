@@ -17,6 +17,11 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+st.title("Revise with AI 📖")
+st.info(f"💡 Chat focus will be centered on the {sel_dis}. Change the document type at the sidebar.")
+st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
+
+
 # Sidebar
 with st.sidebar:
     st.header("Edit question format")
@@ -80,11 +85,6 @@ if "chat_history" not in st.session_state:
 
 if "recorded_question" not in st.session_state:
     st.session_state["recorded_question"] = ""
-
-st.title("Revise with AI 📖")
-st.info(f"💡 Chat focus will be centered on the {sel_dis}. Change the document type at the sidebar.")
-st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
-
 
 col1, col2 = st.columns([1, 2])
 
