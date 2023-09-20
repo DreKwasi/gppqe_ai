@@ -18,6 +18,9 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+st.title("Open Ended Quiz 🎙️")
+st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
+
 # Sidebar
 with st.sidebar:
     st.header("Edit question format")
@@ -81,9 +84,6 @@ if "ai_question" not in st.session_state:
 
 if "recorded_answer" not in st.session_state:
     st.session_state["recorded_answer"] = ""
-
-st.title("Open Ended Quiz 🎙️")
-st.toast("This is a demo of the PharmaAssist AI. Please use it as a learning tool.")
 
 
 col1, col2, col3 = st.columns([1, 1, 3])
